@@ -11,11 +11,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
-  // app.enableCors({
-  //   allowedHeaders: "*",
-  //   origin: "*",
-  //   credentials: true,
-  // });
+  app.enableCors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3001',
+    credentials: true,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Proyecto Test')

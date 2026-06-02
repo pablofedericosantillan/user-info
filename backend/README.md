@@ -37,6 +37,143 @@ src/
   features/     Feature modules, services, DTOs, models, and repositories
 ```
 
+## Layered Architecture
+
+The backend is organized by layers. Each layer has a specific responsibility, so the code stays easier to read, test, and extend.
+
+```text
+HTTP request
+  -> Controller layer
+  -> DTO validation layer
+  -> Service layer
+  -> Repository layer
+  -> Database model layer
+  -> MongoDB
+```
+
+### Controller Layer
+
+Location:
+
+```text
+src/controllers/
+```
+
+Controllers expose the HTTP API. They receive requests, read params/query/body data, and delegate the business action to a service.
+
+Example:
+
+```text
+src/controllers/users/users.controller.ts
+```
+
+This controller exposes:
+
+- `POST /users`
+- `GET /users`
+
+Controllers should stay thin. They should not contain database logic.
+
+### DTO And Validation Layer
+
+Location:
+
+```text
+src/features/users/dtos/
+src/common/dto/
+```
+
+DTOs define the shape of incoming and outgoing data. They use `class-validator` decorators to validate requests before the data reaches the service layer.
+
+Examples:
+
+- `CreateUserRequest` validates user creation payloads
+- `GetAllUsersRequest` validates pagination and filters
+- `PaginationQuery` centralizes pagination params
+
+### Service Layer
+
+Location:
+
+```text
+src/features/users/services/
+```
+
+Services contain the use cases of the application. They coordinate the work needed to complete an action.
+
+Examples:
+
+- `UserCreateService` handles the create-user use case
+- `UserGetService` handles the list-users use case
+
+Services should contain business decisions and call repositories when they need data persistence.
+
+### Repository Layer
+
+Location:
+
+```text
+src/features/users/users.repository.ts
+src/common/repository/
+```
+
+Repositories isolate database access. The feature repository extends a shared base repository, so common database operations like create and paginated reads are reused.
+
+This keeps MongoDB/Mongoose details away from controllers and services.
+
+### Model Layer
+
+Location:
+
+```text
+src/features/users/models/
+```
+
+Models define how data is stored in MongoDB with Mongoose schemas.
+
+Example:
+
+```text
+src/features/users/models/user.model.ts
+```
+
+### Config Layer
+
+Location:
+
+```text
+src/config/
+src/common/app-config/
+```
+
+Configuration is centralized here. This includes MongoDB connection setup, CORS setup, environment validation, and app-level config access.
+
+## User Request Flow
+
+Creating a user follows this flow:
+
+```text
+POST /users
+  -> UsersController.create()
+  -> CreateUserRequest validation
+  -> UserCreateService.create()
+  -> UsersRepository.create()
+  -> User Mongoose model
+  -> MongoDB users collection
+```
+
+Listing users follows this flow:
+
+```text
+GET /users?limit=50&offset=0
+  -> UsersController.getAll()
+  -> GetAllUsersRequest validation
+  -> UserGetService.getAll()
+  -> UsersRepository.getPaginated()
+  -> User Mongoose model
+  -> MongoDB users collection
+```
+
 ## API Overview
 
 | Method | Path | Description |

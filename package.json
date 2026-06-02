@@ -1,0 +1,12 @@
+{
+  "name": "user-info",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "dev:backend": "npm --prefix backend run start:dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev": "sh -c 'npm --prefix backend run start:dev & npm --prefix frontend run dev & wait'",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build"
+  }
+}

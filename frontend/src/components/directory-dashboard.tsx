@@ -29,7 +29,7 @@ export function DirectoryDashboard({ users }: DirectoryDashboardProps) {
     const normalizedQuery = query.toLowerCase().trim();
 
     return users.filter((user) =>
-      [user.name, user.role, user.email, user.status, user.sso]
+      [user.name, user.email, user.status, user.sso]
         .join(' ')
         .toLowerCase()
         .includes(normalizedQuery),
@@ -64,7 +64,7 @@ export function DirectoryDashboard({ users }: DirectoryDashboardProps) {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search by name, email or role..."
+            placeholder="Search by name or email..."
           />
         </div>
 
@@ -73,7 +73,6 @@ export function DirectoryDashboard({ users }: DirectoryDashboardProps) {
             <thead>
               <tr>
                 <th className="sorted">User ▲</th>
-                <th>Role</th>
                 <th>Email</th>
                 <th>Last Login</th>
                 <th>Status</th>
@@ -87,9 +86,6 @@ export function DirectoryDashboard({ users }: DirectoryDashboardProps) {
                   <td>
                     <span className="user-name">{user.name}</span>
                     {user.isCurrent ? <span className="you-badge">You</span> : null}
-                  </td>
-                  <td>
-                    <span className="role-badge">{user.role}</span>
                   </td>
                   <td>{user.email}</td>
                   <td>{user.lastLogin}</td>
@@ -117,4 +113,3 @@ export function DirectoryDashboard({ users }: DirectoryDashboardProps) {
     </main>
   );
 }
-

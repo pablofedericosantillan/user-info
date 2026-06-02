@@ -167,7 +167,6 @@ td {
   font-weight: 650;
 }
 
-.role-badge,
 .you-badge,
 .status-badge,
 .sso-badge {
@@ -180,7 +179,6 @@ td {
   font-weight: 650;
 }
 
-.role-badge,
 .you-badge {
   background: var(--blue-soft);
   color: #79a0ff;

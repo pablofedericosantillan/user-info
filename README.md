@@ -1,4 +1,4 @@
-# User Info
+# User Manage Server
 
 Full-stack user management project with a NestJS backend and a Next.js frontend.
 
@@ -27,7 +27,7 @@ Backend variables:
 
 ```env
 PORT=3000
-MONGO_URI=mongodb://localhost:27017/user-info
+MONGO_URI=mongodb://localhost:27017/user-manage-server
 CORS_ORIGIN=http://localhost:3001
 ```
 

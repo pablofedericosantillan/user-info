@@ -10,7 +10,7 @@ export function LoginForm() {
   const login = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     window.localStorage.setItem(
-      'user-info-session',
+      'user-manage-server-session',
       JSON.stringify({
         email: 'pablo.santillan@portero.ai',
         loggedAt: new Date().toISOString(),
@@ -43,4 +43,3 @@ export function LoginForm() {
     </form>
   );
 }
-

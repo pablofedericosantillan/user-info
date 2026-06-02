@@ -15,7 +15,7 @@ export function DirectoryDashboard({ users }: DirectoryDashboardProps) {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const session = window.localStorage.getItem('user-info-session');
+    const session = window.localStorage.getItem('user-manage-server-session');
 
     if (!session) {
       router.replace('/login');
@@ -37,7 +37,7 @@ export function DirectoryDashboard({ users }: DirectoryDashboardProps) {
   }, [query, users]);
 
   const logout = () => {
-    window.localStorage.removeItem('user-info-session');
+    window.localStorage.removeItem('user-manage-server-session');
     router.replace('/login');
   };
 

@@ -1,5 +1,5 @@
 {
-  "name": "user-info-frontend",
+  "name": "user-manage-frontend",
   "private": true,
   "version": "1.0.0",
   "scripts": {
@@ -23,4 +23,3 @@
     "typescript": "^5.7.3"
   }
 }
-

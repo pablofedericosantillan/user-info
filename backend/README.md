@@ -1,4 +1,4 @@
-# User Info API
+# User Manage Server API
 
 NestJS API for creating and listing users with MongoDB persistence, request validation, pagination, and Swagger documentation.
 
@@ -58,7 +58,7 @@ Create a `.env` file in the project root:
 
 ```bash
 PORT=3000
-MONGO_URI=mongodb://localhost:27017/user-info
+MONGO_URI=mongodb://localhost:27017/user-manage-server
 NODE_ENV=development
 ```
 

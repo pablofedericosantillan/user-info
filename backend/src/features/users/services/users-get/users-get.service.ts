@@ -12,7 +12,9 @@ export class UserGetService {
   async getAll(params: GetAllUsersRequest): Promise<GetAllUsersResponse> {
     const result = await this.usersRepository.getPaginated(params);
 
-    const entries = result.map((r) => plainToInstance(UserDto, r));
+    const entries = result.map((r) =>
+      plainToInstance(UserDto, r, { excludeExtraneousValues: true }),
+    );
 
     return {
       entries,

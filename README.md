@@ -1,22 +1,70 @@
 # User Manage Server
-
 Full-stack user management project with a NestJS backend and a Next.js frontend.
 
 ## Project Structure
-
 ```text
 backend/   NestJS API with MongoDB persistence
 frontend/  Next.js app with login flow and user directory dashboard
 ```
 
-## Requirements
+## Architecture
 
-- Node.js 20+
-- npm 10+
-- MongoDB running locally or a MongoDB Atlas connection string
+### Backend — Layered Architecture
+
+```text
+backend/src/
+├── main.ts
+├── app.module.ts
+│
+├── config/                        # App-level configuration (CORS, etc.)
+├── common/
+│   ├── app-config/                # Env config module and service
+│   └── dto/                       # Shared DTOs (pagination)
+│
+├── providers/
+│   └── mongo/                     # Mongoose setup and base repository
+│       └── repository/            # Generic model repository + transactions
+│
+├── features/
+│   └── users/                     # Domain: users
+│       ├── models/                # Mongoose schema
+│       ├── dtos/                  # Create / get DTOs
+│       ├── services/              # Business logic (create, get)
+│       ├── types/
+│       └── users.repository.ts    # Data access layer
+│
+└── controllers/
+    ├── users/                     # HTTP entry point for users
+    └── health/                    # Health check endpoint
+```
+
+> Flow: `Controller → Service → Repository → MongoDB`
+
+---
+
+### Frontend — Feature-based Architecture
+
+```text
+frontend/src/
+├── app/                           # Next.js App Router
+│   ├── layout.tsx                 # Root layout
+│   ├── page.tsx                   # Dashboard page (/)
+│   └── login/
+│       └── page.tsx               # Login page (/login)
+│
+├── components/
+│   ├── login-form.tsx             # Login UI
+│   └── directory-dashboard.tsx    # User directory UI
+│
+└── lib/
+    └── users.ts                   # API calls to backend
+```
+
+> Flow: `Page → Component → lib/users (fetch) → Backend API`
+
+---
 
 ## Environment Setup
-
 Create the backend environment file:
 
 ```bash
@@ -28,7 +76,6 @@ Backend variables:
 ```env
 PORT=3000
 MONGO_URI=mongodb://localhost:27017/user-manage-server
-CORS_ORIGIN=http://localhost:3001
 ```
 
 Create the frontend environment file:
@@ -83,32 +130,12 @@ Run only the frontend:
 npm run dev:frontend
 ```
 
-URLs:
+URLs default:
 
 - Backend API: `http://localhost:3000`
 - Swagger docs: `http://localhost:3000/docs`
 - Frontend app: `http://localhost:3001`
 
-## How Frontend And Backend Sync
-
-The frontend dashboard calls:
-
-```text
-GET http://localhost:3000/users?limit=50&offset=0
-```
-
-The backend allows requests from:
-
-```text
-http://localhost:3001
-```
-
-This is configured with:
-
-- `frontend/.env.local`: `NEXT_PUBLIC_API_URL=http://localhost:3000`
-- `backend/.env`: `CORS_ORIGIN=http://localhost:3001`
-
-If the backend has no users yet, the frontend shows demo users so the screen still renders.
 
 ## Login Flow
 

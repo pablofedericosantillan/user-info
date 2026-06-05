@@ -5,7 +5,7 @@ import { HealthModule } from './controllers/health/health.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './controllers/users/users.module';
 import { AppConfigModule, AppConfigService } from './common/app-config';
-import { createMongooseOptions } from './config/mongo/mongoose-config';
+import { createMongooseOptions } from './providers/mongo/mongoose-config';
 
 @Module({
   imports: [

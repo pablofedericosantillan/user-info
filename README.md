@@ -11,56 +11,17 @@ frontend/  Next.js app with login flow and user directory dashboard
 
 ### Backend — Layered Architecture
 
-```text
-backend/src/
-├── main.ts
-├── app.module.ts
-│
-├── config/                        # App-level configuration (CORS, etc.)
-├── common/
-│   ├── app-config/                # Env config module and service
-│   └── dto/                       # Shared DTOs (pagination)
-│
-├── providers/
-│   └── mongo/                     # Mongoose setup and base repository
-│       └── repository/            # Generic model repository + transactions
-│
-├── features/
-│   └── users/                     # Domain: users
-│       ├── models/                # Mongoose schema
-│       ├── dtos/                  # Create / get DTOs
-│       ├── services/              # Business logic (create, get)
-│       ├── types/
-│       └── users.repository.ts    # Data access layer
-│
-└── controllers/
-    ├── users/                     # HTTP entry point for users
-    └── health/                    # Health check endpoint
-```
+The backend is organized in three layers: **Controller** (HTTP), **Service** (business logic), and **Data** (persistence). Each layer only communicates with the one below it.
 
-> Flow: `Controller → Service → Repository → MongoDB`
+> Flow: `Controller → Service → Repository → DB`
 
 ---
 
 ### Frontend — Feature-based Architecture
 
-```text
-frontend/src/
-├── app/                           # Next.js App Router
-│   ├── layout.tsx                 # Root layout
-│   ├── page.tsx                   # Dashboard page (/)
-│   └── login/
-│       └── page.tsx               # Login page (/login)
-│
-├── components/
-│   ├── login-form.tsx             # Login UI
-│   └── directory-dashboard.tsx    # User directory UI
-│
-└── lib/
-    └── users.ts                   # API calls to backend
-```
+The frontend is organized by type: pages in `app/`, UI in `components/`, and data fetching in `lib/`.
 
-> Flow: `Page → Component → lib/users (fetch) → Backend API`
+> Flow: `Page → Component → lib (fetch) → Backend API`
 
 ---
 

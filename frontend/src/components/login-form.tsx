@@ -1,45 +1,18 @@
 'use client';
 
-import { Lock, Mail } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { FormEvent } from 'react';
-
 export function LoginForm() {
-  const router = useRouter();
+  const apiUrl =
+    process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
 
-  const login = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    window.localStorage.setItem(
-      'user-manage-server-session',
-      JSON.stringify({
-        email: 'pablo.santillan@portero.ai',
-        loggedAt: new Date().toISOString(),
-      }),
-    );
-    router.push('/');
+  const handleGoogleLogin = () => {
+    window.location.href = `${apiUrl}/auth/google/login`;
   };
 
   return (
-    <form className="login-form" onSubmit={login}>
-      <label>
-        <span>Email</span>
-        <div className="field">
-          <Mail aria-hidden="true" size={18} />
-          <input type="email" defaultValue="pablo.santillan@portero.ai" />
-        </div>
-      </label>
-
-      <label>
-        <span>Password</span>
-        <div className="field">
-          <Lock aria-hidden="true" size={18} />
-          <input type="password" defaultValue="password" />
-        </div>
-      </label>
-
-      <button className="primary-button" type="submit">
-        Sign in
+    <div className="login-form">
+      <button className="primary-button" type="button" onClick={handleGoogleLogin}>
+        Sign in with Google
       </button>
-    </form>
+    </div>
   );
 }

@@ -1,3 +1,6 @@
+import { apiUrl } from "@/shared";
+import { fallbackUsers } from "./ fallbacks";
+
 export type ApiUser = {
   id?: string;
   _id?: string;
@@ -16,49 +19,6 @@ export type DirectoryUser = {
   isCurrent?: boolean;
 };
 
-const fallbackUsers: DirectoryUser[] = [
-  {
-    id: '1',
-    name: 'Administrator',
-    email: 'laboratory@portero.ai',
-    lastLogin: '5/8/2026, 4:22:31 PM',
-    status: 'Active',
-    sso: 'Disabled',
-  },
-  {
-    id: '2',
-    name: 'Alberto Herrera',
-    email: 'alberto.herrera@portero.ai',
-    lastLogin: '5/29/2026, 6:31:19 PM',
-    status: 'Active',
-    sso: 'Enabled',
-  },
-  {
-    id: '3',
-    name: 'Anat Garty',
-    email: 'anat.garty@portero.ai',
-    lastLogin: '5/25/2026, 10:19:49 AM',
-    status: 'Active',
-    sso: 'Enabled',
-  },
-  {
-    id: '4',
-    name: 'Lucas Bonastre',
-    email: 'lucas.bonastre@portero.ai',
-    lastLogin: '6/1/2026, 2:05:39 PM',
-    status: 'Active',
-    sso: 'Enabled',
-  },
-  {
-    id: '5',
-    name: 'Pablo Santillan',
-    email: 'pablo.santillan@portero.ai',
-    lastLogin: '6/2/2026, 7:23:49 PM',
-    status: 'Active',
-    sso: 'Enabled',
-    isCurrent: true,
-  },
-];
 
 const titleCase = (value: string) =>
   value
@@ -70,12 +30,22 @@ const titleCase = (value: string) =>
 
 const readString = (value: unknown) => (typeof value === 'string' ? value : undefined);
 
-export async function fetchDirectoryUsers(): Promise<DirectoryUser[]> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+export async function fetchDirectoryUsers(
+  token?: string,
+): Promise<DirectoryUser[]> {
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers['Accept'] = 'application/json';
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
 
   try {
-    const response = await fetch(`${apiUrl}/users?limit=50&offset=0`, {
+    const limit = 10, offset=0;
+
+    const response = await fetch(`${apiUrl}/users?limit=${limit}&offset=${offset}`, {
       cache: 'no-store',
+      headers,
     });
 
     if (!response.ok) return fallbackUsers;

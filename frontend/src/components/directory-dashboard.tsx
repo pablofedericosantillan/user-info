@@ -3,26 +3,26 @@
 import { MoreHorizontal, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import type { DirectoryUser } from '@/lib/users';
+import { getSession, clearSession } from '@/lib/auth';
+import { fetchDirectoryUsers, type DirectoryUser } from '@/lib/users';
 
-type DirectoryDashboardProps = {
-  users: DirectoryUser[];
-};
-
-export function DirectoryDashboard({ users }: DirectoryDashboardProps) {
+export function DirectoryDashboard() {
   const router = useRouter();
+  const [users, setUsers] = useState<DirectoryUser[]>([]);
   const [query, setQuery] = useState('');
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const session = window.localStorage.getItem('user-manage-server-session');
+    const session = getSession();
 
     if (!session) {
       router.replace('/login');
       return;
     }
 
-    setIsReady(true);
+    fetchDirectoryUsers(session.token)
+      .then(setUsers)
+      .finally(() => setIsReady(true));
   }, [router]);
 
   const filteredUsers = useMemo(() => {
@@ -37,7 +37,7 @@ export function DirectoryDashboard({ users }: DirectoryDashboardProps) {
   }, [query, users]);
 
   const logout = () => {
-    window.localStorage.removeItem('user-manage-server-session');
+    clearSession();
     router.replace('/login');
   };
 

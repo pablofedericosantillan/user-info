@@ -9,15 +9,15 @@ frontend/  Next.js app with login flow and user directory dashboard
 
 ## Architecture
 
-### Backend — Layered Architecture
+### Backend
 
-The backend is organized in three layers: **Controller** (HTTP), **Service** (business logic), and **Data** (persistence). Each layer only communicates with the one below it.
+The backend is organized in three layers: **Controller**, **Service** (business logic), and **Data** (persistence). Each layer only communicates with the one below it.
 
 > Flow: `Controller → Service → Repository → DB`
 
 ---
 
-### Frontend — Feature-based Architecture
+### Frontend
 
 The frontend is organized by type: pages in `app/`, UI in `components/`, and data fetching in `lib/`.
 
@@ -48,7 +48,7 @@ cp frontend/.env.example frontend/.env.local
 Frontend variables:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 The frontend reads users from `NEXT_PUBLIC_API_URL`, so keep it pointing to the backend URL.
@@ -93,25 +93,6 @@ npm run dev:frontend
 
 URLs default:
 
-- Backend API: `http://localhost:3000`
-- Swagger docs: `http://localhost:3000/docs`
+- Backend API: `http://localhost:8000`
+- Swagger docs: `http://localhost:8000/docs`
 - Frontend app: `http://localhost:3001`
-
-
-## Login Flow
-
-Open:
-
-```text
-http://localhost:3001/login
-```
-
-Use any valid email and any password to enter the dashboard. The session is stored in browser local storage for this demo flow.
-
-## Build
-
-From the repository root:
-
-```bash
-npm run build
-```

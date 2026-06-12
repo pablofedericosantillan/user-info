@@ -54,7 +54,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 `frontend/.env.local` only needs one variable (already set by default):
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 ---

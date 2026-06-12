@@ -20,6 +20,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
+  // Passport calls this method after Google successfully authenticates the user.
+  // Here we extract the required profile information and map it to our application user.
   async validate(
     _accessToken: string,
     _refreshToken: string,

@@ -30,7 +30,7 @@ export class AuthService {
     return { id: created.id, email: profile.email };
   }
 
-  sign(userId: string, email: string): string {
+  generateJwt(userId: string, email: string): string {
     return this.jwtService.sign({ sub: userId, email });
   }
 }

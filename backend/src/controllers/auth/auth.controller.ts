@@ -30,7 +30,10 @@ export class AuthController {
   @ApiOperation({ summary: 'Google OAuth callback' })
   googleCallback(@Req() req: any, @Res() res: Response) {
     const user = req.user as { id: string; email: string };
-    const token = this.authService.sign(user.id, user.email);
+
+    // Generate Jwt token
+    const token = this.authService.generateJwt(user.id, user.email);
+
     const { FRONTEND_URL } = this.config.getConfig();
 
     console.log('Google/callback - token -> ', token);

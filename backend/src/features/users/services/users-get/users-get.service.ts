@@ -9,6 +9,17 @@ import { plainToInstance } from 'class-transformer';
 export class UserGetService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
+  async findByEmail(email: string): Promise<UserDto | null> {
+    const result = await this.usersRepository.getPaginated(
+      { limit: 1, offset: 0 },
+      { email },
+    );
+    if (result.length === 0) return null;
+    return plainToInstance(UserDto, result[0], {
+      excludeExtraneousValues: true,
+    });
+  }
+
   async getAll(params: GetAllUsersRequest): Promise<GetAllUsersResponse> {
     const result = await this.usersRepository.getPaginated(params);
 

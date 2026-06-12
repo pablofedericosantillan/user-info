@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -29,4 +30,24 @@ export class EnvConfig {
   @IsNotEmpty()
   @IsString()
   MONGO_URI: string = process.env.MONGO_URI;
+
+  @IsNotEmpty()
+  @IsString()
+  GOOGLE_CLIENT_ID: string = process.env.GOOGLE_CLIENT_ID;
+
+  @IsNotEmpty()
+  @IsString()
+  GOOGLE_CLIENT_SECRET: string = process.env.GOOGLE_CLIENT_SECRET;
+
+  @IsNotEmpty()
+  @IsString()
+  JWT_SECRET: string = process.env.JWT_SECRET;
+
+  @IsOptional()
+  @IsString()
+  BACKEND_URL: string = process.env.BACKEND_URL ?? 'http://localhost:8000';
+
+  @IsOptional()
+  @IsString()
+  FRONTEND_URL: string = process.env.FRONTEND_URL ?? 'http://localhost:3001';
 }

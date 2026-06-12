@@ -1,3 +1,4 @@
+// import { JwtAuthGuard } from 'src/features/auth/guards/jwt-auth.guard';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -8,6 +9,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
   });
+
+  // app.useGlobalGuards(new JwtAuthGuard(new Reflector()));
 
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 

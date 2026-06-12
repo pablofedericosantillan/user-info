@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { HealthModule } from './controllers/health/health.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './controllers/users/users.module';
-// import { AuthModule } from './controllers/auth/auth.module';
+import { AuthModule } from './controllers/auth/auth.module';
 import { AppConfigModule, AppConfigService } from './common/app-config';
 import { createMongooseOptions } from './providers/mongo/mongoose-config';
 
@@ -20,7 +20,7 @@ import { createMongooseOptions } from './providers/mongo/mongoose-config';
     // Controllers
     HealthModule,
     UserModule,
-    // AuthModule,
+    AuthModule,
   ],
   providers: [],
 })

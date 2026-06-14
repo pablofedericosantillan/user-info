@@ -1,10 +1,39 @@
 # User Manage Server
 Full-stack user management project with a NestJS backend and a Next.js frontend.
 
+## Tech Stack
+
+### Backend
+
+| Component    | Library                          |
+|--------------|----------------------------------|
+| Runtime      | Node.js (>= 20.x)                |
+| Framework    | NestJS 11                        |
+| Language     | TypeScript                       |
+| Auth         | Passport.js (JWT + Google OAuth 2.0) |
+| API Docs     | Swagger UI (@nestjs/swagger)     |
+| Database     | MongoDB (Mongoose)               |
+
+### Frontend
+
+| Component    | Library        |
+|--------------|----------------|
+| Framework    | Next.js 15     |
+| Language     | TypeScript     |
+
 ## Project Structure
 ```text
 backend/   NestJS API with MongoDB persistence
 frontend/  Next.js app with login flow and user directory dashboard
+docker/    Docker Compose setup for local infrastructure
+```
+
+### Docker
+
+`docker/docker-compose.yml` spins up a single-node MongoDB 6.0 replica set (`testMongo1`) on port `27017`. A replica set is required because NestJS + Mongoose uses transactions, which MongoDB only supports in replica set mode.
+
+```bash
+docker compose -f docker/docker-compose.yml up -d
 ```
 
 ## Architecture
@@ -35,8 +64,16 @@ cp backend/.env.example backend/.env
 Backend variables:
 
 ```env
-PORT=3000
+PORT=8000
 MONGO_URI=mongodb://localhost:27017/user-manage-server
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+JWT_SECRET=change-me-in-production
+
+BACKEND_URL=http://localhost:8000
+FRONTEND_URL=http://localhost:3001
 ```
 
 Create the frontend environment file:

@@ -36,11 +36,6 @@ export function HomePage() {
     );
   }, [query, users]);
 
-  const logout = () => {
-    clearSession();
-    router.replace('/login');
-  };
-
   if (!isReady) {
     return <main className="dashboard-shell" />;
   }
@@ -53,9 +48,6 @@ export function HomePage() {
             <h1>User Directory</h1>
             <p>View and manage all user accounts</p>
           </div>
-          <button className="logout-button" type="button" onClick={logout}>
-            Log out
-          </button>
         </div>
 
         <div className="search-form">
@@ -72,7 +64,6 @@ export function HomePage() {
           <table>
             <thead>
               <tr>
-                <th className="sorted">User ▲</th>
                 <th>Email</th>
                 <th>Last Login</th>
                 <th>Status</th>
@@ -82,20 +73,11 @@ export function HomePage() {
             <tbody>
               {filteredUsers.map((user) => (
                 <tr key={user.id}>
-                  {/* <td>
-                    <span className="user-name">{user.name}</span>
-                    {user.isCurrent ? <span className="you-badge">You</span> : null}
-                  </td> */}
                   <td>{user.email}</td>
                   <td>{user.lastLogin}</td>
                   <td>
                     <span className={`status-badge ${user.status.toLowerCase()}`}>
                       {user.status}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={`sso-badge ${user.sso.toLowerCase()}`}>
-                      {user.sso}
                     </span>
                   </td>
                   <td>

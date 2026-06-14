@@ -1,9 +1,8 @@
 import { apiUrl } from "@/shared";
 import { fallbackUsers } from "./ fallbacks";
 
-export type ApiUser = {
+export type User = {
   id?: string;
-  _id?: string;
   email: string;
   metadata?: Record<string, unknown>;
   createdAt?: string;
@@ -16,9 +15,7 @@ export type DirectoryUser = {
   lastLogin: string;
   status: 'Active' | 'Inactive';
   sso: 'Enabled' | 'Disabled';
-  isCurrent?: boolean;
 };
-
 
 const titleCase = (value: string) =>
   value
@@ -30,7 +27,8 @@ const titleCase = (value: string) =>
 
 const readString = (value: unknown) => (typeof value === 'string' ? value : undefined);
 
-export async function fetchDirectoryUsers(
+
+export async function getUsers(
   token?: string,
 ): Promise<DirectoryUser[]> {
   const headers: Record<string, string> = {};
@@ -38,7 +36,6 @@ export async function fetchDirectoryUsers(
     headers['Accept'] = 'application/json';
     headers['Authorization'] = `Bearer ${token}`;
   }
-  
 
   try {
     const limit = 10, offset=0;
@@ -50,7 +47,7 @@ export async function fetchDirectoryUsers(
 
     if (!response.ok) return fallbackUsers;
 
-    const payload = (await response.json()) as { entries?: ApiUser[] };
+    const payload = (await response.json()) as { entries?: User[] };
     const entries = payload.entries ?? [];
 
     if (!entries.length) return fallbackUsers;
@@ -62,7 +59,7 @@ export async function fetchDirectoryUsers(
       const lastLoginSource = readString(metadata.lastLogin) ?? user.createdAt;
 
       return {
-        id: user.id ?? user._id ?? `${index}`,
+        id: user.id ?? `${index}`,
         name,
         email: user.email,
         lastLogin: lastLoginSource
@@ -75,5 +72,30 @@ export async function fetchDirectoryUsers(
     });
   } catch {
     return fallbackUsers;
+  }
+}
+
+
+export async function getMe(
+  token?: string,
+): Promise<User> {
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers['Accept'] = 'application/json';
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  try {
+    const response = await fetch(`${apiUrl}/users/me`, {
+      cache: 'no-store',
+      headers,
+    });
+
+    if (!response.ok) return fallbackUsers[0];
+
+    const payload = (await response.json());
+    return payload;
+  } catch {
+    return fallbackUsers[0];
   }
 }

@@ -3,10 +3,10 @@
 import { MoreHorizontal, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import { getSession, clearSession } from '@/lib/auth';
-import { fetchDirectoryUsers, type DirectoryUser } from '@/lib/users';
+import { getSession, clearSession } from '@/core/lib/auth';
+import { getUsers, type DirectoryUser } from '@/core/lib/users';
 
-export function DirectoryDashboard() {
+export function HomePage() {
   const router = useRouter();
   const [users, setUsers] = useState<DirectoryUser[]>([]);
   const [query, setQuery] = useState('');
@@ -20,7 +20,7 @@ export function DirectoryDashboard() {
       return;
     }
 
-    fetchDirectoryUsers(session.token)
+    getUsers(session.token)
       .then(setUsers)
       .finally(() => setIsReady(true));
   }, [router]);
@@ -76,17 +76,16 @@ export function DirectoryDashboard() {
                 <th>Email</th>
                 <th>Last Login</th>
                 <th>Status</th>
-                <th>SSO</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredUsers.map((user) => (
                 <tr key={user.id}>
-                  <td>
+                  {/* <td>
                     <span className="user-name">{user.name}</span>
                     {user.isCurrent ? <span className="you-badge">You</span> : null}
-                  </td>
+                  </td> */}
                   <td>{user.email}</td>
                   <td>{user.lastLogin}</td>
                   <td>

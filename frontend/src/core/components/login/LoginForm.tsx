@@ -1,9 +1,8 @@
 'use client';
 
-export function LoginForm() {
-  const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+import { apiUrl } from "@/shared";
 
+export function LoginForm() {
   const handleGoogleLogin = () => {
     window.location.href = `${apiUrl}/auth/google/login`;
   };

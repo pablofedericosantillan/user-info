@@ -1,7 +1,18 @@
 import { JwtAuthGuard } from 'src/features/auth/guards/jwt-auth.guard';
-import { Controller, Post, Body, Query, Get, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Query,
+  Get,
+  UseGuards,
+  Req,
+  NotFoundException,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import type { Request } from 'express';
 import { Dtos, UserCreateService, UserGetService } from 'src/features/users';
+import { JwtPayload } from 'src/features/auth/strategies/jwt.strategy';
 
 @ApiTags('Users')
 @ApiBearerAuth('Authorization')
@@ -31,5 +42,14 @@ export class UsersController {
     @Query() dto: Dtos.GetAllUsersRequest,
   ): Promise<Dtos.GetAllUsersResponse> {
     return this.userGetService.getAll(dto);
+  }
+
+  @Get('/me')
+  @ApiOperation({ summary: 'Get current authenticated user' })
+  async getMe(@Req() req: Request): Promise<Dtos.UserDto> {
+    const { email } = req.user as JwtPayload;
+    const user = await this.userGetService.findByEmail(email);
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 }
